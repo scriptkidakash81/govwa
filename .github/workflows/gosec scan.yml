@@ -39,3 +39,12 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: results.sarif
+
+      - name: Fail if high or critical vulnerabilities are found
+        run: |
+          # Check if there are any high or critical vulnerabilities in the SARIF file
+          high_critical_vulns=$(jq '[.runs[].results[] | select(.level == "high" or .level == "critical")] | length' results.sarif)
+          if [ "$high_critical_vulns" -gt 0 ]; then
+            echo "High or critical vulnerabilities found! Failing the job."
+            exit 1
+          fi
