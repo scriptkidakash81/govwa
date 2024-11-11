@@ -1,0 +1,42 @@
+name: Semgrep Scan
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - synchronize
+      - reopened
+  push:
+    branches:
+      - main
+
+jobs:
+  semgrep:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Install Semgrep
+        run: |
+          curl -sfL https://install.semgrep.dev | sh
+          export PATH=$PATH:$HOME/semgrep
+      - name: Run Semgrep
+        run: |
+          semgrep --config=auto --severity=high,critical --output=json ./...
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload scan results
+        uses: actions/upload-artifact@v2
+        with:
+          name: semgrep-results.json
+          path: semgrep-results.json
+      - name: Fail if high/critical vulnerabilities found
+        run: |
+          if grep -q '"severity": "high\|critical"' semgrep-results.json; then
+            echo "High or critical vulnerabilities found. Merge blocked."
+            exit 1
+          else
+            echo "Semgrep scan passed."
+          fi
