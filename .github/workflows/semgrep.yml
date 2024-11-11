@@ -16,12 +16,17 @@ jobs:
   semgrep:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      - name: Set up python
+        uses: actions/checkout@v4
+        with:
+          python-version: '3.x'
+
       - name: Install Semgrep
-        run: |
-          curl -sfL https://install.semgrep.dev | sh
-          export PATH=$PATH:$HOME/semgrep
+        run: pip install semgrep
+        
       - name: Run Semgrep
         run: |
           semgrep --config=auto --severity=high,critical --output=json ./...
