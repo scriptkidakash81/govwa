@@ -29,7 +29,7 @@ jobs:
         
       - name: Run Semgrep
         run: |
-          semgrep --config=auto --severity: ERROR --output=json ./...
+          semgrep --config=auto --severity='ERROR' --output=json ./...
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload scan results
