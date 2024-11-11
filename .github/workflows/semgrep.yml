@@ -29,7 +29,7 @@ jobs:
         
       - name: Run Semgrep
         run: |
-          semgrep --config=auto --severity=high,critical --output=json ./...
+          semgrep --config=auto --severity=error --output=json ./...
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Upload scan results
@@ -37,10 +37,10 @@ jobs:
         with:
           name: semgrep-results.json
           path: semgrep-results.json
-      - name: Fail if high/critical vulnerabilities found
+      - name: Fail if error/critical vulnerabilities found
         run: |
-          if grep -q '"severity": "high\|critical"' semgrep-results.json; then
-            echo "High or critical vulnerabilities found. Merge blocked."
+          if grep -q '"severity": "error\|critical"' semgrep-results.json; then
+            echo "Error or critical vulnerabilities found. Merge blocked."
             exit 1
           else
             echo "Semgrep scan passed."
