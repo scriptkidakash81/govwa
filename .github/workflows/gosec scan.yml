@@ -26,7 +26,7 @@ jobs:
       - name: Run Gosec Security Scanner
         uses: securego/gosec@v2.17.0  # Pin to a stable release
         with:
-          args: '--no-fail -fmt sarif -out results.sarif ./...'
+          args: '-no-fail -fmt sarif -stdout results.sarif -severity high ./...'
 
       - name: Check if results.sarif exists
         run: |
