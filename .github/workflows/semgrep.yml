@@ -35,7 +35,7 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           # Path to SARIF file relative to the root of the repository
-          sarif_file: results.sarif
+          sarif_file: semgrep-results.sarif
           
       - name: Fail if error/critical vulnerabilities found
         run: |
@@ -46,4 +46,4 @@ jobs:
             echo "Semgrep scan passed."
           fi
 
-#this is latest 1
+#this is latest 2
