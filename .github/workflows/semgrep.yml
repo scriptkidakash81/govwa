@@ -1,4 +1,8 @@
 name: Semgrep Scan
+permissions:
+  contents: read        # Allows access to the repository contents
+  actions: write        # Needed for uploading SARIF results
+  security-events: write # Allows posting security alerts
 
 on:
   pull_request:
