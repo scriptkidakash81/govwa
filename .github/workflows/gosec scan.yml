@@ -42,10 +42,20 @@ jobs:
 
       - name: Fail if error/critical vulnerabilities found
         run: |
-          if grep -q '"level": "critical"' results.sarif; then
-            echo "Error or critical vulnerabilities found. Merge blocked."
+          if grep -q "Severity: CRITICAL" results.sarif; then
+            echo "Severity: CRITICAL vulnerabilities found. Merge blocked."
             exit 1
+          elif grep -q "Severity: HIGH" results.sarif; then
+            echo "Severity: HIGH vulnerabilities found. Merge blocked."
+            exit 1
+          elif grep -q "\"level\": \"error\"" results.sarif; then
+            echo "level:error vulnerabilities found. Merge blocked."
+            exit 1
+          elif grep -q "Severity: MEDIUM" results.sarif; then
+            echo "Gosec scan passed, Note: Severity: MEDIUM vulnerabilities found."
+          elif grep -q "\"level\": \"warning\"" results.sarif; then
+            echo "Gosec scan passed, Note: level:error vulnerabilities found."
           else
-            echo "Semgrep scan passed."
+            echo "Gosec scan passed."
           fi
-#gosec latest 1
+#Gosec latest 3
