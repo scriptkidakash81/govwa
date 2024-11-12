@@ -48,4 +48,4 @@ jobs:
           else
             echo "Semgrep scan passed."
           fi
-#gosec latest 1
+#gosec latest 2
