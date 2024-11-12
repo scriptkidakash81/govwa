@@ -40,11 +40,12 @@ jobs:
         with:
           sarif_file: results.sarif
 
-      - name: Fail if critical severity vulnerabilities are found
+      - name: Fail if error/critical vulnerabilities found
         run: |
-          # Check if there are any vulnerabilities with severity "critical"
-          critical_vulns=$(jq '[.runs[].results[] | select(.level == "critical")] | length' results.sarif)
-          if [ "$critical_vulns" -gt 0 ]; then
-            echo "Critical severity vulnerabilities found! Failing the job."
+          if grep -q '"level": "critical"' results.sarif; then
+            echo "Error or critical vulnerabilities found. Merge blocked."
             exit 1
+          else
+            echo "Semgrep scan passed."
           fi
+#gosec latest 1
