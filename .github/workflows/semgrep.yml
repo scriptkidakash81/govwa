@@ -35,11 +35,11 @@ jobs:
         run: |
           semgrep --config=auto --sarif --sarif-output=semgrep-results.sarif
           
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
+      - name: Upload GoSec results
+        uses: actions/upload-artifact@v4
         with:
-          # Path to SARIF file relative to the root of the repository
-          sarif_file: semgrep-results.sarif
+          name: semgrep-results.sarif
+          path: semgrep-results.sarif
           
       - name: Fail if error/critical vulnerabilities found
         run: |
@@ -50,4 +50,4 @@ jobs:
             echo "Semgrep scan passed."
           fi
 
-#this is latest 2
+#this is latest 
