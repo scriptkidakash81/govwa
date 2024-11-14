@@ -28,13 +28,6 @@ jobs:
         with:
           args: '-no-fail -fmt=sarif > results.sarif ./...'
 
-      - name: Check if results.sarif exists
-        run: |
-          if [ ! -f results.sarif ]; then
-            echo "results.sarif not found!"
-            exit 1
-          fi
-
       - name: Convert SARIF to JSON
         run: |
           cp results.sarif results.json
