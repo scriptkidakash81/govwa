@@ -1,7 +1,7 @@
 name: Gosec scan
 
 permissions:
-  contents: read        # Allows access to the repository contents
+  contents: read        # Allows access to the repository contentsa
   actions: write        # Needed for uploading SARIF results
   security-events: write # Allows posting security alerts
 
