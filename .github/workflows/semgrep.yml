@@ -40,6 +40,16 @@ jobs:
         with:
           name: semgrep-results.sarif
           path: semgrep-results.sarif
+
+      - name: Convert SARIF to JSON
+        run: |
+          cp results.sarif results.json
+ 
+      - name: Upload GoSec results
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-json
+          path: results.json
           
 #      - name: Fail if error/critical vulnerabilities found
 #        run: |
