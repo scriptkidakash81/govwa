@@ -28,6 +28,12 @@ jobs:
         with:
           args: '-no-fail -fmt sarif -out results.sarif ./...'
 
+      - name: Upload GoSec results
+        uses: actions/upload-artifact@v4
+        with:
+          name: results
+          path: results.sarif
+
       - name: Convert SARIF to JSON
         run: |
           cp results.sarif results.json
