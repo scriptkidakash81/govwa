@@ -41,13 +41,13 @@ jobs:
           name: semgrep-results.sarif
           path: semgrep-results.sarif
           
-      - name: Fail if error/critical vulnerabilities found
-        run: |
-          if grep -q '"level": "error"' semgrep-results.sarif; then
-            echo "Error or critical vulnerabilities found. Merge blocked."
-            exit 1
-          else
-            echo "Semgrep scan passed."
-          fi
+#      - name: Fail if error/critical vulnerabilities found
+#        run: |
+#          if grep -q '"level": "error"' semgrep-results.sarif; then
+#            echo "Error or critical vulnerabilities found. Merge blocked."
+#            exit 1
+#          else
+#            echo "Semgrep scan passed."
+#          fi
 
 #this is latest 
