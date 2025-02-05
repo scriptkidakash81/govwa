@@ -1,7 +1,7 @@
 name: Gosec scan
 
 permissions:
-  contents: read        # Allows access to the repository contentsa
+  contents: read        # Allows access to the repository contents
   actions: write        # Needed for uploading SARIF results
   security-events: write # Allows posting security alerts
 
@@ -12,13 +12,13 @@ on:
   pull_request:
     branches:
       - main
-  
+
 jobs:
   tests:
     runs-on: ubuntu-latest
     env:
       GO111MODULE: on
-      
+
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
@@ -28,7 +28,7 @@ jobs:
         with:
           args: '-no-fail -fmt sarif -out results.sarif ./...'
 
-      - name: Upload GoSec results
+      - name: Upload GoSec results (SARIF)
         uses: actions/upload-artifact@v4
         with:
           name: results-sarif
@@ -37,9 +37,46 @@ jobs:
       - name: Convert SARIF to JSON
         run: |
           cp results.sarif results.json
- 
-      - name: Upload GoSec results
+
+      - name: Upload GoSec results (JSON)
         uses: actions/upload-artifact@v4
         with:
           name: results-json
           path: results.json
+
+      - name: Fail if HIGH vulnerabilities found
+        id: fail_if_high_vulnerabilities
+        run: |
+          if grep -q '"severity": "HIGH"' results.json; then
+            echo "HIGH vulnerabilities found."
+            echo "::set-output name=vulnerability_status::HIGH"
+          else
+            echo "Gosec scan passed."
+            echo "::set-output name=vulnerability_status::NO_VULNERABILITIES"
+          fi
+
+      - name: Add comment on PR if HIGH vulnerabilities are found
+        if: steps.fail_if_high_vulnerabilities.outputs.vulnerability_status == 'HIGH'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const comment = `**Gosec Findings:** HIGH vulnerabilities found in the code. Merge blocked. Please address them before merging.`;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: comment
+            });
+
+      - name: Add comment on PR if Gosec scan is successful
+        if: steps.fail_if_high_vulnerabilities.outputs.vulnerability_status == 'NO_VULNERABILITIES'
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const comment = `**Gosec scan status:** Gosec scan passed successfully. No vulnerabilities found.`;
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: prNumber,
+              body: comment
+            });
