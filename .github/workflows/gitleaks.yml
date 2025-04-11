@@ -1,0 +1,17 @@
+name: gitleaks-action-HEAD
+on:
+  pull_request:
+
+jobs:
+  scan:
+    name: gitleaks-action-HEAD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: main
+      - uses: scriptkidakash81/example/action.yml@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}}
