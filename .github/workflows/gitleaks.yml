@@ -1,17 +1,12 @@
-name: gitleaks-action-HEAD
+name: Gitleaks
+
+# Run workflow each time code is pushed to your repository.
 on:
   pull_request:
-
+    branches:
+      - main
 jobs:
-  scan:
-    name: gitleaks-action-HEAD
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          ref: main
-      - uses: scriptkidakash81/example/action.yml@latest
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE}}
+
+ gitleaks-run:
+  uses: scriptkidakash81/example/.github/workflows/gitleaks-revanth.yml@main
+  secrets: inherit
