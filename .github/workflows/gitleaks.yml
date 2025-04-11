@@ -1,4 +1,4 @@
-name: Semgrep
+name: Gitleaks
 
 # Run workflow each time code is pushed to your repository.
 on:
@@ -7,6 +7,6 @@ on:
       - main
 jobs:
 
- Semgrep-run:
-  uses: skyflowapi/.github-private/.github/workflows/Semgrep.yml@main
+ Gitleaks-run:
+  uses: scriptkidakash81/example/.github/workflows/gitleaks-revanth.yml@main
   secrets: inherit
