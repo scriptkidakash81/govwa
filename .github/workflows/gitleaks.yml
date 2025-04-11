@@ -10,3 +10,4 @@ jobs:
  Gitleaks-run:
   uses: scriptkidakash81/example/.github/workflows/gitleaks-revanth.yml@main
   secrets: inherit
+  
