@@ -6,7 +6,6 @@ on:
     branches:
       - main
 jobs:
-
  Gitleaks-run:
-  uses: scriptkidakash81/example/.github/workflows/gitleaks-revanth.yml@main
+  uses: scriptkidakash81/git-central/workflows/gitleaks.yml@main
   secrets: inherit
